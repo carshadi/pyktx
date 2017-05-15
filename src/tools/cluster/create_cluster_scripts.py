@@ -4,7 +4,7 @@ import os
 
 script_base = """\
 #!/bin/sh
-export KTXSRC='/home/brunsc/git/pyktx/src'
+export KTXSRC='/home/schauderd/mouselight/KTX/pyktx/src'
 export PYTHONPATH="$KTXSRC"
 echo $PYTHONPATH
 /misc/local/python3/bin/python3.5 $KTXSRC/tools/convert_subtree.py "%s" "%s" "%s" %d
@@ -13,10 +13,12 @@ echo $PYTHONPATH
 # input_root = "/nobackup2/mouselight/2016-04-04b"
 # input_root = "/nobackup2/mouselight/2016-07-18b"
 # input_root = "/nrs/mltest/161025b"
-input_root = "/nrs/mouselight/Users/base/150619_prob_octant12_FC_knninit"
+input_root = "/nrs/mouselight/SAMPLES/2017-04-19/"
 # input_root = "/groups/dickson/dicksonlab/BenArthur/20170217_10ExM"
 # output_root = "/nobackup2/mouselight/brunsc/ktxtest"
-output_root = "/nrs/mouselight/brunsc/ktxtest"
+output_root = "/nrs/mouselight/schauderd/ktxtest"
+# NO CHANGES NECESSARY BEYOND THIS POINT TO CUSTOMIZE THIS SCRIPT
+
 # output_root = "/groups/dickson/dicksonlab/CMBruns/ktx"
 subtree_depth = 3
 
