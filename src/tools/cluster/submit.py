@@ -43,7 +43,7 @@ for job in all_jobs:
         qstat_countdown = qstat_freq
     qstat_countdown -= 1
     # print (job)
-    cmd = "qsub -cwd -j y -b y -o %s.log -l h_rt=3600 -l d_rt=750 -V ./%s" % (job, job)
+    cmd = "qsub -cwd -j y -b y -A mluser -o %s.log -l h_rt=3600 -l d_rt=750 -V ./%s" % (job, job)
     print (cmd)
     os.system(cmd)
 elapsed_time = time.time() - start_time
