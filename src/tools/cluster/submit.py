@@ -13,9 +13,9 @@ first_job = 0
 jobcount = 0
 skipped_jobs = 0
 max_concurrent_jobs = 250
-qstat_freq = 25
-qstat_countdown = 0
-os.chdir('jobscripts_150619_prob_octant12_FC_knninit')
+bstat_freq = 25
+bstat_countdown = 0
+os.chdir('jobscripts_2017-06-28')
 all_jobs = glob.glob("subtree*.sh")
 for job in all_jobs:
     if first_job > skipped_jobs:
@@ -30,20 +30,20 @@ for job in all_jobs:
     if permissions != desired_permissions:
         os.chmod(job, desired_permissions)
     # Don't submit so many jobs at once
-    if qstat_countdown <= 0:
+    if bstat_countdown <= 0:
         print("%d jobs submitted so far, out of %d total" % (jobcount, len(all_jobs)))
-        job_list = subprocess.check_output(['qstat',])
-        running_count = len(job_list.splitlines()) - 2
-        while running_count > (max_concurrent_jobs - qstat_freq):
+        job_list = subprocess.check_output(['bjobs',])
+        running_count = len(job_list.splitlines()) - 1
+        while running_count > (max_concurrent_jobs - bstat_freq):
             sleep_interval = 10
             print("%d jobs are currently running. Waiting %d seconds before checking again..." % (running_count, sleep_interval) )
             time.sleep(10)
-            job_list = subprocess.check_output(['qstat', ])
-            running_count = len(job_list.splitlines()) - 2
-        qstat_countdown = qstat_freq
-    qstat_countdown -= 1
+            job_list = subprocess.check_output(['bjobs', ])
+            running_count = len(job_list.splitlines()) - 1
+        bstat_countdown = bstat_freq
+    bstat_countdown -= 1
     # print (job)
-    cmd = "qsub -cwd -j y -b y -A mluser -o %s.log -l h_rt=3600 -l d_rt=750 -V ./%s" % (job, job)
+    cmd = "bsub -P mouselight -o %s.log -W 60 -We 12 ./%s" % (job, job)
     print (cmd)
     os.system(cmd)
 elapsed_time = time.time() - start_time
