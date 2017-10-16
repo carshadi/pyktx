@@ -208,10 +208,11 @@ class KtxHeader(object):
             else:
                 raise
         elif self.gl_base_internal_format == GL.GL_RGB:
-            if self.gl_type == GL.GL_UNSIGNED_SHORT:
+            #DGA commented out these lines:
+            #if self.gl_type == GL.GL_UNSIGNED_SHORT:
                 self.gl_internal_format = GL.GL_RGB16
-            else:
-                raise
+            #else:
+            #    raise
         else:
             raise # TODO
         #
