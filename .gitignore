@@ -1,6 +1,7 @@
 /.project
 /.pydevproject
 *.pyc
+pyktx.egg-info
 /.settings
 /src/tools/*.tif
 /src/tools/*.ktx
