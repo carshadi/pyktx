@@ -30,9 +30,11 @@ import math
 
 import numpy
 
+
 def mipmap_dimension(level, full):
     # Computes integer edge dimension for a mipmap of a particular level, based on the full sized (level zero) dimension
     return int(max(1, math.floor(full / 2**level)))
+
 
 def _assort_subvoxels(input_array, shape):
     """
@@ -81,7 +83,7 @@ def _assort_subvoxels(input_array, shape):
         subvoxel_index = p
         scratch_key = [slice(None), ] * ndims + [subvoxel_index,] # e.g. [:,:,:,0]
         # Slurp every instance of this subvoxel into the scratch array
-        scratch[scratch_key] = input_array[parent_key]
+        scratch[tuple(scratch_key)] = input_array[tuple(parent_key)]
     # Zero certain subvoxels when downsampling odd numbered parent dimensions,
     # So each parent voxel contributes to exactly one child subvoxel
     # Reshape to make voxel zeroing easier
@@ -125,6 +127,7 @@ def _assort_subvoxels(input_array, shape):
     scratch.shape = shape1
     return scratch
 
+
 def _filter_assorted_array(assorted_array, filter_='mean'):
     """
     Apply box-like downsample filter to specially prearranged image array.
@@ -162,8 +165,8 @@ def _filter_assorted_array(assorted_array, filter_='mean'):
         assorted_array = numpy.sort(assorted_array) # sort intensities of subvoxels along final dimension
         brightest_key = [slice(None),]*ndims + [-1,]
         second_brightest_key = [slice(None),]*ndims + [-2,]
-        s0 = assorted_array[brightest_key] # Largest intensity per voxel
-        s1 = assorted_array[second_brightest_key] # Second largest intensity per voxel
+        s0 = assorted_array[tuple(brightest_key)] # Largest intensity per voxel
+        s1 = assorted_array[tuple(second_brightest_key)] # Second largest intensity per voxel
         s1[s1==0] = s0[s1==0] # Replace zeros with largest element, in case second largest is zero/no-data
         mipmap = s1
         # percentile "82" yields second-largest value when number of elements is 7-12 (8 is canonical)
@@ -176,6 +179,7 @@ def _filter_assorted_array(assorted_array, filter_='mean'):
     mipmap = mipmap.astype(original_dtype) # Convert back to integer dtype AFTER calculation
     return mipmap
 
+
 def downsample_array_xy(array, filter_='arthur'):
     """
     Downsample in X and Y directions, using second largest non-zero intensity.
@@ -186,6 +190,7 @@ def downsample_array_xy(array, filter_='arthur'):
     scratch = _assort_subvoxels(array, shape)
     downsampled = _filter_assorted_array(scratch, filter_)
     return downsampled
+
 
 def create_mipmaps(mipmap0, filter_='arthur'):
     """
@@ -214,6 +219,7 @@ def create_mipmaps(mipmap0, filter_='arthur'):
         mipmaps.append(mipmap)
     return mipmaps
 
+
 def mipmap_shapes(root_shape):
     """
     Creates a sequence of mipmap shapes.
@@ -231,6 +237,7 @@ def mipmap_shapes(root_shape):
         current_shape = tuple([mipmap_dimension(mipmap_level, biggest_shape[i]) for i in range(ndims)]) 
         mipmap_shapes.append(current_shape)
     return mipmap_shapes
+
 
 def interleave_channel_arrays(arrays):
     "Combine multiple single channel stacks into one multi-channel stack"

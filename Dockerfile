@@ -1,23 +1,29 @@
 FROM continuumio/miniconda3
 
-RUN apt-get update && apt-get install -y build-essential && apt-get install -yq --no-install-recommends \
-    libtiff-dev \
-    python-numpy \
-    python-dev \
-    python-opengl
+RUN apt-get update && apt-get install -y build-essential && apt-get install -y \
+    python3-numpy \
+    python3-dev \
+    python3-opengl \
+    git
+
 
 WORKDIR /app
 
 COPY src src
 COPY setup.py setup.py
 
+RUN /opt/conda/bin/activate
+
 ENV PYTHONPATH=/app/src:${PYTHONPATH}
 
-RUN conda install -y pyopengl
-RUN conda install -y libtiff
-
-RUN pip install -e .
 RUN pip install numpy
-RUN pip install libtiff
+RUN conda install -y libtiff=4.0.10
+RUN pip install -e .
 
-ENTRYPOINT ["python", "/app/src/tools/convert_subtree.py"]
+RUN conda install -y pyopengl
+
+WORKDIR /tmplibtiff
+RUN git clone https://github.com/pearu/pylibtiff.git .
+RUN pip install -e .
+
+ENTRYPOINT ["/opt/conda/bin/python", "/app/src/tools/convert_subtree.py"]
