@@ -81,10 +81,13 @@ if __name__ == "__main__":
     # octree_path = [6,2,7,3,1,8]
     # octree_path = [1,]
 
-    if sys.argv[3] == '':
+    if sys.argv[3] == '' or sys.argv[3] == '""':
+        print("Start node is root:", sys.argv[3])
         subtree_path = []
     else:
+        print("Start node is:", sys.argv[3])
         subtree_path = [int(x) for x in sys.argv[3].split('/')]
+    print("Levels", sys.argv[4])
     level_count = int(sys.argv[4])
 
     print(input_path)
