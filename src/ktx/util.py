@@ -113,7 +113,7 @@ def _assort_subvoxels(input_array, shape):
         left_key.extend([slice(None),] * i) # Everything from earlier dimensions
         left_key.append(slice(2, 3, 1)) # Clear the third subvoxel in this dimension
         left_key.extend([slice(None),] * (len(input_array.shape) - i - 1))
-        scratch[left_key] = 0
+        scratch[tuple(left_key)] = 0
         # print (left_key)
         # Clear first pixel of rightmost columns
         right_key = [slice(None),] * i # Everything from earlier dimensions
@@ -123,7 +123,7 @@ def _assort_subvoxels(input_array, shape):
         right_key.extend([slice(None),] * i) # Everything from earlier dimensions
         right_key.append(slice(0, 1, 1)) # Clear the first subvoxel in this dimension
         right_key.extend([slice(None),] * (len(input_array.shape) - i - 1))
-        scratch[right_key] = 0
+        scratch[tuple(right_key)] = 0
     scratch.shape = shape1
     return scratch
 
