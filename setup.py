@@ -6,7 +6,7 @@ Created on Aug 9, 2016
 @author: Christopher Bruns
 '''
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 # Load module version from ovr/version.py
 exec(open('src/ktx/version.py').read())
@@ -21,7 +21,7 @@ setup(
     url = "https://github.com/cmbruns/pyktx",
     download_url = "https://github.com/cmbruns/pyktx/tarball/" + __version__,
     package_dir = {'': 'src'},
-    packages = ['ktx',],
+    packages = find_packages('src'),
     keywords = "opengl ktx texture file format",
     classifiers = [],
 )
